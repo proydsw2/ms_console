@@ -1,53 +1,47 @@
 package com.cibertec.dsw2.Model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.*;
 
-@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
-@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-@javax.persistence.Entity
+@SequenceGenerator(name="seq_console_id", initialValue=1, allocationSize=100)
+@Entity
 public class Console {
 
     @Id
-    @GeneratedValue()
-    @JsonProperty("id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_console_id")
+    @Column(name = "num_console_id")
+    private Long num_console_id;
 
-    @JsonProperty("description")
-    private String description;
+    @Column(name = "str_description")
+    private String str_description;
 
-    public Console(){
-
+    public Console(String str_description) {
+        this.str_description = str_description;
     }
 
-    public Console(int id, String description){
-        this.setId(id);
-        this.setDescription(description);
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public Console() {
     }
 
     @Override
-    public String toString(){
-        return "Console:{"+
-                "id = "+getId()+
-                "description = "+getDescription()+
-                "}";
+    public String toString() {
+        return "Console{" +
+                "num_console_id=" + num_console_id +
+                ", str_description='" + str_description + '\'' +
+                '}';
+    }
+
+    public Long getNum_console_id() {
+        return num_console_id;
+    }
+
+    public void setNum_console_id(Long num_console_id) {
+        this.num_console_id = num_console_id;
+    }
+
+    public String getStr_description() {
+        return str_description;
+    }
+
+    public void setStr_description(String str_description) {
+        this.str_description = str_description;
     }
 }

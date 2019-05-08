@@ -15,53 +15,52 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "{/dsw2}")
 public class ConsoleController {
 
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
-    private ConsoleRepository rep;
+    private ConsoleRepository repository;
 
-    @GetMapping(path = {"/console", "/console/"})
+    @GetMapping(path = "/console")
     public List<Console> retriveAll() {
-        return rep.findAll();
+        return repository.findAll();
     }
 
-    @GetMapping(path = {"/console/{id}", "/console/{id}/"})
-    public Console retriveOne(@PathVariable Integer id) {
-        Optional<Console> cons = rep.findById(id);
+    @GetMapping(path = "/console/{id}")
+    public Console retriveOne(@PathVariable Long id) {
+        Optional<Console> cons = repository.findById(id);
 
         return cons.get();
     }
 
-    @PostMapping(path = {"/console", "/console/"})
+    @PostMapping(path = "/console")
     public ResponseEntity<Object> create(@RequestBody Console cons) {
-        Console entity = rep.save(cons);
+        Console entity = repository.save(cons);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(entity.getId()).toUri();
+                .buildAndExpand(entity.getNum_console_id()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(path = {"/console/{id}", "/console/{id}/"})
-    public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody Console cons) {
-        Optional<Console> entity = rep.findById(id);
+    @PutMapping(path = "/console/{id}")
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Console cons) {
+        Optional<Console> entity = repository.findById(id);
 
         if (!entity.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
-        cons.setId(id);
-        rep.save(cons);
+        cons.setNum_console_id(id);
+        repository.save(cons);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(path = {"/console/{id}", "/console/{id}/"})
-    public void delete(@PathVariable Integer id) {
-        rep.deleteById(id);
+    @DeleteMapping(path = "/console/{id}")
+    public void delete(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 }
